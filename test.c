@@ -1,7 +1,7 @@
 #include "simpletest.h"
 #include "avl.h"
 
-#define MAX 15
+#define MAX 5
 
 //Funcao pra testar se esta balanceando corretamente
 int isBalanced(Nodo_AVL *p){
@@ -60,20 +60,16 @@ void test_insert(){
 
 			THEN("Alturas da sub-arvore direita e esquerda nao podem ter diferença maior que 1");
 				isEqual(isBalanced(p),1);
-	
-	
+
 
 			THEN("Funcao print_inOrder deve imprimir todos os elementos na ordem");
 				printf("\t");
 				print_inOrder(p);
 				printf("\n\n");
-
+		
 	avl_destroy(p);
+	
 }
-
-
-
-
 
 
 
@@ -82,6 +78,8 @@ void test_rotations(){
 	Nodo_AVL *p = NULL;
 
 	DESCRIBE("Testando as rotacoes");
+	
+	
 	DESCRIBE("ROTACAO RR");
 		WHEN("Eu insiro elementos em ordem");
 				for(i=1; i<8; i++){
@@ -103,6 +101,7 @@ void test_rotations(){
 		p = NULL;
 
 	
+
 	DESCRIBE("ROTACAO LL");
 		WHEN("Eu insiro elementos em ordem inversa");
 				for(i=7; i>=1; i--){
@@ -123,6 +122,7 @@ void test_rotations(){
 		avl_destroy(p);
 		p = NULL;
 	
+
 	DESCRIBE("ROTACAO RL");
 		WHEN("Eu insiro elementos");
 				p = avl_insert(p,1);
@@ -149,6 +149,7 @@ void test_rotations(){
 		avl_destroy(p);
 		p = NULL;
 		
+		
 	DESCRIBE("ROTACAO LR");
 		WHEN("Eu insiro elementos");
 				p = avl_insert(p,7);
@@ -174,6 +175,7 @@ void test_rotations(){
 				isEqual(isBalanced(p),1);
 		avl_destroy(p);
 		p = NULL;
+		
 }
 
 void test_delete(){
@@ -249,6 +251,6 @@ int main () {
 	//test_create();
 	//test_insert();
 	//test_delete();
-	test_diverse();
-	//test_rotations();
+	//test_diverse();
+	test_rotations();
 }
