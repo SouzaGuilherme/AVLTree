@@ -158,14 +158,21 @@ Nodo_AVL *maiorDireita(Nodo_AVL *current){
 	}
 }
 
+Nodo_AVL *procuraMenor(Nodo_AVL *current){
+	Nodo_AVL *nodo1 = current;
+	Nodo_AVL *nodo2 = current->left;
+	while(nodo2 != NULL){
+		nodo1 = nodo2;
+		nodo2 = nodo2->left;
+	}
+	return nodo1;
+}
+
 
 Nodo_AVL *avl_delete(Nodo_AVL *current, int key){
 	Nodo_AVL *nodoAcesso = current;
-	// print_tree(current, 0);
-	// printf("\n\nVALOR QUE ESTA SENDO REMOVIDO: %d\n\n", key);
-
 	// Quando for nulo
-	if (nodoAcesso == NULL){
+	if ( *nodoAcesso == NULL ){
 		printf("Aqui e nullo\n");
 		return nodoAcesso;
 	}
@@ -195,61 +202,31 @@ Nodo_AVL *avl_delete(Nodo_AVL *current, int key){
 
 	}else{
 		// nodo o qual quero deletar afinal
-		if ((nodoAcesso->right == NULL) && (nodoAcesso->left == NULL)){
-			free(nodoAcesso);
-		}
+		if ((nodoAcesso->right == NULL) || (nodoAcesso->left == NULL)){
 			Nodo_AVL *nodoAUX = nodoAcesso;
-		// caso o nodo nao tenha nem um filho
-		else{
-			// caso tenha filho somente a direita
-			if (nodoAcesso->left == NULL){
-				nodoAcesso = nodoAcesso->right;
-				nodoAUX->right = NULL;
-				free(nodoAUX);
-				// nodoAUX = NULL;
-
-
-			}else if (nodoAcesso->right == NULL){
-				// caso tenha filho somente a esquerda
-				nodoAcesso = nodoAcesso->left;
-				nodoAUX->left = NULL;
-				free(nodoAUX);
-				// nodoAUX = NULL;
-
-				// testando
-				// if(factorBalancing(nodoAcesso) >= 2){
-    //             	if(key < (nodoAcesso->left->key)){ 
-    //                 	nodoAcesso = rotation_LL(nodoAcesso);
-    //             	} else {
-    //                 	nodoAcesso = rotation_LR(nodoAcesso);
-    //             	}
-    //         	}
-
+			if (nodoAcesso->left != NULL){
+				nodoAcesso = nodoAcesso->left;		
 			}else{
-				// escolha foi o maior filho direita da subArvore da esquerda
-				nodoAUX = maiorDireita(nodoAcesso->left);
-				nodoAUX->left = nodoAcesso->left;
-				nodoAUX->right = nodoAcesso->right;
-				nodoAcesso->left = nodoAcesso->right = NULL;
-				free(nodoAcesso);
-				nodoAcesso = nodoAUX;
-				nodoAUX = NULL;
-				
-
-				// testando
-				// if(factorBalancing(nodoAcesso) >= 2){
-    //             	if(key < (nodoAcesso->left->key)){ 
-    //                 	nodoAcesso = rotation_LL(nodoAcesso);
-    //             	} else {
-    //                 	nodoAcesso = rotation_LR(nodoAcesso);
-    //             	}
-    //         	}
-
+				nodoAcesso = nodoAcesso->right;
 			}
-			return nodoAUX; 
-		}
+			free(nodoAUX);
+			
+		}else{
+			Nodo_AVL *nodoTemp = procuraMenor(nodoAcesso->right);
+			nodoAcesso->key = nodoTemp->key;
+			avl_delete(&(nodoAcesso->right), nodoAcesso->key);
+			// testando
+			if(factorBalancing(nodoAcesso) >= 2){
+      			if(key < (nodoAcesso->left->key)){ 
+       				nodoAcesso = rotation_LL(nodoAcesso);
+            	} else {
+                nodoAcesso = rotation_LR(nodoAcesso);
+            }
+        }
+        return current;
 	}
 	return current;
+}
 }
 
 void print_inOrder(Nodo_AVL *current){
