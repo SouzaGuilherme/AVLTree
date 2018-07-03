@@ -1,7 +1,7 @@
 #include "simpletest.h"
 #include "avl.h"
 
-#define MAX 5
+#define MAX 15
 
 //Funcao pra testar se esta balanceando corretamente
 int isBalanced(Nodo_AVL *p){
@@ -249,8 +249,8 @@ void test_diverse(){
 
 int main () {
 	//test_create();
-	//test_insert();
-	//test_delete();
+	// test_insert();
+	test_delete();
 	//test_diverse();
-	test_rotations();
+	// test_rotations();
 }
